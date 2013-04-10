@@ -521,7 +521,7 @@
         <subsystem xmlns="urn:jboss:domain:torquebox-web:1.0"/>
         <subsystem xmlns="urn:jboss:domain:polyglot-hasingleton:1.0"/>
         <subsystem xmlns="urn:jboss:domain:polyglot-cache:1.0"/>
-        <subsystem xmlns="urn:jboss:domain:polyglot-stomp:1.0" socket-binding="stomp"/>
+        <subsystem xmlns="urn:jboss:domain:polyglot-stomp:1.0" socket-binding="stomp" secure-socket-binding="stomp-secure"/>
     </profile>
 
     <interfaces>
@@ -554,6 +554,7 @@
         <outbound-socket-binding name="mail-smtp">
             <remote-destination host="localhost" port="25"/>
         </outbound-socket-binding>
-        <socket-binding name="stomp" port="8675"/>
+        <socket-binding name="stomp" port="28675"/>
+        <socket-binding name="stomp-secure" port="28676"/>
     </socket-binding-group>
 </server>

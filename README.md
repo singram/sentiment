@@ -1,5 +1,5 @@
 TorqueBox on OpenShift
-=========================
+======================
 
 Here is a quick way to try out your Ruby application running in
 TorqueBox on OpenShift.
@@ -25,8 +25,8 @@ Remove the sample app provided by the jbossas-7 cartridge
 
 Add this upstream repo
 
-    git remote add upstream -m master git://github.com/openshift-quickstart/torquebox-quickstart.git
-    git pull -s recursive -X theirs upstream master
+    git remote add quickstart -m master git://github.com/openshift-quickstart/torquebox-quickstart.git
+    git pull --no-commit -s recursive -X theirs quickstart master
 
 Then add, commit, and push your changes
 
