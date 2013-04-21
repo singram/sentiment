@@ -13,7 +13,16 @@
 # Application start and stop is subject to different timeouts
 # throughout the system.
 
+# The version of TorqueBox to install
+VERSION=LATEST
+
 source $OPENSHIFT_REPO_DIR/.openshift/torquebox.sh
 
-bundle_install
-#db_migrate
+# To force a re-install with every push, uncomment this line
+#rm -f $TORQUEBOX_HOME
+
+if [ ! -d $TORQUEBOX_HOME ]; then
+    torquebox_install $VERSION
+    bundle_install
+    #db_migrate
+fi

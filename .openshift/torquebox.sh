@@ -13,40 +13,30 @@
 # Application start and stop is subject to different timeouts
 # throughout the system.
 
-FORCE_BUILD=false               # set to true to force build
-VERSION=LATEST
+# Required TorqueBox environment variables
+export TORQUEBOX_HOME=$OPENSHIFT_DATA_DIR/torquebox
+export JRUBY_HOME=$TORQUEBOX_HOME/jruby
+export PATH=$JRUBY_HOME/bin:$PATH
+# Insert the TorqueBox modules before the jbossas-7 ones
+export JBOSS_MODULEPATH_ADD=$TORQUEBOX_HOME/jboss/modules/system/layers/base:$TORQUEBOX_HOME/jboss/modules
 
-# Determine whether we're getting a release or an incremental 
-if [[ ${VERSION} =~ \. ]]; then
-    # Official release, e.g. 0.9.0
-    URL=http://repository-projectodd.forge.cloudbees.com/release/org/torquebox/torquebox-dist/${VERSION}/torquebox-dist-${VERSION}-bin.zip
-else
-    # Incremental build, e.g. 999 or LATEST
-    URL=http://repository-projectodd.forge.cloudbees.com/incremental/torquebox/${VERSION}/torquebox-dist-bin.zip
-fi
-
-pushd ${OPENSHIFT_DATA_DIR} >/dev/null
-if [[ ${FORCE_BUILD} == true ]]; then
-    rm -f torquebox
-fi
-# Download/explode the dist and symlink it to torquebox
-if [ ! -d torquebox ]; then
+function torquebox_install() {
+    local VERSION=${1:-LATEST}
+    # Determine whether we're getting a release or an incremental 
+    if [[ ${VERSION} =~ \. ]]; then
+        URL=http://repository-projectodd.forge.cloudbees.com/release/org/torquebox/torquebox-dist/${VERSION}/torquebox-dist-${VERSION}-bin.zip
+    else
+        URL=http://repository-projectodd.forge.cloudbees.com/incremental/torquebox/${VERSION}/torquebox-dist-bin.zip
+    fi
+    pushd ${OPENSHIFT_DATA_DIR} >/dev/null
     rm -rf torquebox*
     wget -nv ${URL}
     unzip -q torquebox-dist-*.zip
     rm torquebox-dist-*.zip
     ln -s torquebox-* torquebox
     echo "Installed" torquebox-*
-fi
-popd >/dev/null
-
-# Required TorqueBox environment variables
-export TORQUEBOX_HOME=$OPENSHIFT_DATA_DIR/torquebox
-export JRUBY_HOME=$TORQUEBOX_HOME/jruby
-export PATH=$JRUBY_HOME/bin:$PATH
-
-# Insert the TorqueBox modules before the jbossas-7 ones
-export JBOSS_MODULEPATH_ADD=$TORQUEBOX_HOME/jboss/modules/system/layers/base:$TORQUEBOX_HOME/jboss/modules
+    popd >/dev/null
+}
 
 function bundle_install() {
     if [ ! -d "${OPENSHIFT_REPO_DIR}/.bundle" ] && [ -f "${OPENSHIFT_REPO_DIR}/Gemfile" ]; then
