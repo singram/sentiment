@@ -21,7 +21,8 @@ source $OPENSHIFT_REPO_DIR/.openshift/torquebox.sh
 
 if [ ! -f $TORQUEBOX_HOME/$VERSION ]; then
     torquebox_install $VERSION
-    bundle_install
     #db_migrate
     touch $TORQUEBOX_HOME/$VERSION
 fi
+
+bundle_install
