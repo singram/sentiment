@@ -18,7 +18,7 @@ export TORQUEBOX_HOME=$OPENSHIFT_DATA_DIR/torquebox
 export JRUBY_HOME=$TORQUEBOX_HOME/jruby
 export PATH=$JRUBY_HOME/bin:$PATH
 # Insert the TorqueBox modules before the jbossas-7 ones
-export JBOSS_MODULEPATH_ADD=$TORQUEBOX_HOME/jboss/modules/system/layers/base:$TORQUEBOX_HOME/jboss/modules
+export OPENSHIFT_JBOSSAS_MODULE_PATH=$TORQUEBOX_HOME/jboss/modules/system/layers/base:$TORQUEBOX_HOME/jboss/modules/system/layers/polyglot:$TORQUEBOX_HOME/jboss/modules/system/layers/torquebox
 
 function torquebox_install() {
     local VERSION=${1:-LATEST}

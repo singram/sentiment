@@ -4,10 +4,10 @@ TorqueBox on OpenShift
 Here is a quick way to try out your Ruby application running in
 TorqueBox on OpenShift.
 
-By default, this quickstart will install the latest incremental
-version of TorqueBox. You can specify a different version by tweaking
-`.openshift/action_hooks/pre_start_jbossas-7`, but any build older 
-than incremental 1294 won't work. ;-)
+By default, this quickstart will install TorqueBox 3.0.0.beta1. You
+can specify a different version by tweaking
+`.openshift/action_hooks/pre_start_jbossas-7`, but any release older
+than 3.0.0.beta1 won't work. ;-)
 
 Running on OpenShift
 --------------------
