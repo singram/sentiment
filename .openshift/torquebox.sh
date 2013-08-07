@@ -24,7 +24,7 @@ function torquebox_install() {
     local VERSION=${1:-LATEST}
     # Determine whether we're getting a release or an incremental 
     if [[ ${VERSION} =~ \. ]]; then
-        URL=http://repository-projectodd.forge.cloudbees.com/release/org/torquebox/torquebox-dist/${VERSION}/torquebox-dist-${VERSION}-bin.zip
+        URL=http://torquebox.org/release/org/torquebox/torquebox-dist/${VERSION}/torquebox-dist-${VERSION}-bin.zip
     else
         URL=http://repository-projectodd.forge.cloudbees.com/incremental/torquebox/${VERSION}/torquebox-dist-bin.zip
     fi
