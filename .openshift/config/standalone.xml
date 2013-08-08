@@ -189,16 +189,20 @@
                     <property name="bind_addr">${env.OPENSHIFT_JBOSSAS_IP}</property>
                     <property name="defer_client_bind_addr">true</property>
                     <property name="use_send_queues">false</property>
-                    <property name="thread_pool.min_threads">1</property>
+                    <property name="max_bundle_size">32k</property>
+                    <property name="thread_pool.min_threads">3</property>
                     <property name="thread_pool.max_threads">${messaging.thread.pool.max.size}</property>
-                    <property name="thread_pool.keep_alive_time">5000</property>
+                    <property name="thread_pool.keep_alive_time">10000</property>
                     <property name="thread_pool.queue_enabled">true</property>
                     <property name="thread_pool.queue_max_size">10000</property>
-                    <property name="oob_thread_pool.min_threads">1</property>
+                    <property name="oob_thread_pool.min_threads">3</property>
                     <property name="oob_thread_pool.max_threads">${messaging.thread.pool.max.size}</property>
-                    <property name="oob_thread_pool.keep_alive_time">5000</property>
+                    <property name="oob_thread_pool.keep_alive_time">10000</property>
                     <property name="oob_thread_pool.queue_enabled">false</property>
-                    <property name="oob_thread_pool.rejection_policy">run</property>
+                    <property name="oob_thread_pool.rejection_policy">discard</property>
+                    <property name="timer.min_threads">2</property>
+                    <property name="timer.max_threads">5</property>
+                    <property name="timer.keep_alive_time">10000</property>
                 </transport>
                 <protocol type="TCPPING">
                 	<property name="timeout">15000</property>
@@ -207,11 +211,14 @@
                 	<property name="num_initial_members">1</property>
                 </protocol>
                 <protocol type="MERGE2"/>
-                <protocol type="FD"/>
+                <protocol type="FD">
+                  <property name="timeout">15000</property>
+                  <property name="max_tries">3</property>
+                </protocol>
                 <protocol type="VERIFY_SUSPECT"/>
                 <protocol type="BARRIER"/>
                 <protocol type="pbcast.NAKACK2"/>
-                <protocol type="UNICAST2"/>
+                <protocol type="UNICAST3"/>
                 <protocol type="pbcast.STABLE"/>
                 <protocol type="AUTH">
                   <property name="auth_class">org.jgroups.auth.MD5Token</property>
@@ -220,7 +227,9 @@
                 </protocol>
                 <protocol type="pbcast.GMS"/>
                 <protocol type="MFC"/>
-                <protocol type="FRAG2"/>  
+                <protocol type="FRAG2">
+                  <property name="frag_size">30k</property>
+                </protocol>
                 <!--protocol type="pbcast.STATE_TRANSFER"/>
                 <protocol type="pbcast.FLUSH"/-->
             </stack>
