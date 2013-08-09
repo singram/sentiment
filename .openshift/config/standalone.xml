@@ -243,6 +243,7 @@
             <hornetq-server>
                 <persistence-enabled>true</persistence-enabled>
                 <security-enabled>false</security-enabled>
+                <jmx-management-enabled>true</jmx-management-enabled>
                 <journal-file-size>102400</journal-file-size>
                 <journal-min-files>2</journal-min-files>
                 
@@ -294,6 +295,8 @@
                         <address>jms</address>
                         <connector-ref>netty</connector-ref>
                         <discovery-group-ref discovery-group-name="dg-group1"/>
+                        <retry-interval>500</retry-interval>
+                        <reconnect-attempts>1</reconnect-attempts>
                     </cluster-connection>
                 </cluster-connections>
 
