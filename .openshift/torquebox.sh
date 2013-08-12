@@ -20,6 +20,11 @@ export PATH=$JRUBY_HOME/bin:$PATH
 # Insert the TorqueBox modules before the jbossas-7 ones
 export OPENSHIFT_JBOSSAS_MODULE_PATH=$TORQUEBOX_HOME/jboss/modules/system/layers/base:$TORQUEBOX_HOME/jboss/modules/system/layers/polyglot:$TORQUEBOX_HOME/jboss/modules/system/layers/torquebox
 
+# Ensure we can create plenty of threads
+if [ $(ulimit -u) -lt 500 ]; then
+  ulimit -u 500
+fi
+
 function torquebox_install() {
     local VERSION=${1:-LATEST}
     # Determine whether we're getting a release or an incremental 

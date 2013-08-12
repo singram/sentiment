@@ -23,7 +23,7 @@ fi
 
 # Reduce the messaging threads to conserve memory
 # This also gets used for jgroups and jgroups-oob threads
-export MESSAGING_THREAD_RATIO=0.12 # AS7 cart defaults to 0.2
+export MESSAGING_THREAD_RATIO=0.10 # AS7 cart defaults to 0.2
 
 source $OPENSHIFT_REPO_DIR/.openshift/torquebox.sh
 
