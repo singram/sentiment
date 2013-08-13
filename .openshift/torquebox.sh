@@ -1,17 +1,21 @@
 #!/bin/bash
 
-# The pre_start_cartridge and pre_stop_cartridge hooks are *SOURCED*
-# immediately before (re)starting or stopping the specified cartridge.
-# They are able to make any desired environment variable changes as
-# well as other adjustments to the application environment.
+# The version of TorqueBox to install. Should be either LATEST, an
+# official release (e.g. 2.1.3) or an incremental build number (e.g. 1594)
+VERSION=3.0.0.beta2
 
-# The post_start_cartridge and post_stop_cartridge hooks are executed
-# immediately after (re)starting or stopping the specified cartridge.
+# The application environment - usually one of development, test, or production
+export RACK_ENV=production
+export RAILS_ENV=$RACK_ENV
 
-# Exercise caution when adding commands to these hooks.  They can
-# prevent your application from stopping cleanly or starting at all.
-# Application start and stop is subject to different timeouts
-# throughout the system.
+# Reduce the messaging threads to conserve memory
+# This also gets used for jgroups and jgroups-oob threads
+export MESSAGING_THREAD_RATIO=0.10 # AS7 cart defaults to 0.2
+
+# Ensure we can create plenty of threads
+if [ $(ulimit -u) -lt 500 ]; then
+  ulimit -u 500
+fi
 
 # Required TorqueBox environment variables
 export TORQUEBOX_HOME=$OPENSHIFT_DATA_DIR/torquebox
@@ -19,11 +23,6 @@ export JRUBY_HOME=$TORQUEBOX_HOME/jruby
 export PATH=$JRUBY_HOME/bin:$PATH
 # Insert the TorqueBox modules before the jbossas-7 ones
 export OPENSHIFT_JBOSSAS_MODULE_PATH=$TORQUEBOX_HOME/jboss/modules/system/layers/base:$TORQUEBOX_HOME/jboss/modules/system/layers/polyglot:$TORQUEBOX_HOME/jboss/modules/system/layers/torquebox
-
-# Ensure we can create plenty of threads
-if [ $(ulimit -u) -lt 500 ]; then
-  ulimit -u 500
-fi
 
 function torquebox_install() {
     local VERSION=${1:-LATEST}
@@ -53,6 +52,6 @@ function bundle_install() {
 
 function db_migrate() {
     pushd ${OPENSHIFT_REPO_DIR} > /dev/null
-    bundle exec rake db:migrate RAILS_ENV="production"
+    bundle exec rake db:migrate
     popd > /dev/null
 }
