@@ -185,7 +185,7 @@
                 <transport type="TCP" socket-binding="jgroups-tcp"> 
                   <property name="external_addr">${env.OPENSHIFT_GEAR_DNS}</property>
                   <property name="external_port">${env.OPENSHIFT_JBOSSAS_CLUSTER_PROXY_PORT:env.OPENSHIFT_CLUSTER_PORT}</property>
-                  <property name="bind_port">7600</property>
+                  <property name="bind_port">${env.OPENSHIFT_JBOSSAS_CLUSTER_PORT}</property>
                   <property name="bind_addr">${env.OPENSHIFT_JBOSSAS_IP}</property>
                   <property name="defer_client_bind_addr">true</property>
                   <property name="use_send_queues">false</property>
