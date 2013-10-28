@@ -45,7 +45,7 @@ function torquebox_install() {
 function bundle_install() {
     if [ ! -d "${OPENSHIFT_REPO_DIR}/.bundle" ] && [ -f "${OPENSHIFT_REPO_DIR}/Gemfile" ]; then
         pushd ${OPENSHIFT_REPO_DIR} > /dev/null
-        jruby -J-Xmx256m -J-Dhttps.protocols=SSLv3 -S bundle install
+        jruby -J-Xmx256m -J-Dhttps.protocols=SSLv3 -S bundle install --without development test --deployment
         popd > /dev/null
     fi
 }
