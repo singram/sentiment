@@ -1,12 +1,3 @@
-require 'bundler/setup'
-require 'sinatra'
-
-module Simple
-  class Application < Sinatra::Base
-    get '/' do
-      redirect "/index.html"
-    end
-  end
-end
-
-run Simple::Application
+root = ::File.dirname(__FILE__)
+require ::File.join( root, 'app' )
+run Sentiment.new

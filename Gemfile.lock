@@ -5,6 +5,7 @@ GEM
     blankslate (2.1.2.4)
     edn (1.0.0)
       parslet (~> 1.4.0)
+    json (1.8.1-java)
     parser (2.1.4)
       ast (~> 1.1)
       slop (~> 3.4, >= 3.4.5)
@@ -44,6 +45,7 @@ GEM
       torquebox-transactions (= 3.0.1)
     torquebox-configure (3.0.1-java)
       blankslate (= 2.1.2.4)
+    torquebox-console (0.3.0)
     torquebox-core (3.0.1-java)
       edn (= 1.0.0)
     torquebox-messaging (3.0.1-java)
@@ -68,6 +70,8 @@ PLATFORMS
   java
 
 DEPENDENCIES
+  json
   rubocop
   sinatra
+  torquebox-console
   torquebox-server

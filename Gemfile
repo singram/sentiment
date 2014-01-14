@@ -1,6 +1,8 @@
 source "http://rubygems.org"
 
-gem "sinatra"
+gem 'sinatra'
+gem 'json'
+gem 'torquebox-console'
 
 group :test, :development do
   gem 'rubocop'
