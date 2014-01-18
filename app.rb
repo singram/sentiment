@@ -5,11 +5,9 @@ require 'json'
 require 'bootstrap_jars'
 
 class Sentiment < Sinatra::Application
-
   configure :production do
     set :clean_trace, true
   end
-
 end
 
 require_relative 'models/init'

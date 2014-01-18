@@ -24,7 +24,7 @@
       <div class="row">
 	<div class="col-md-6">
 	  <textarea class="form-control" rows="3"
-		    placeholder="Twitter Search Keywords or simple text" id="text"
+		    placeholder="Text to extract sentiment from" id="text"
 		    name="text"></textarea>
 	  <input type="submit" value="Run Sentiment Analysis" id="submit" class="btn btn-success"/>
 	</div>
@@ -38,8 +38,36 @@
     <!-- ------------ TEMPLATES ------------ -->
 
     <script type="text/template" id="searchResult">
+      <div class="col-md-6">
+	<h2>Analysis</h2>
+        <p>"{{text}}"</p>
+        <h5>Sentiment: {{sentiment}}</h5>
+      </div>
+    </script>
+
+    <!-- ------------ TWITTER ANALYSIS ------------ -->
+
+    <br>
+    <div class="container">
+      <div class="row">
+	<div class="col-md-6">
+	  <textarea class="form-control" rows="3"
+		    placeholder="Twitter Search Keywords" id="twitter_text"
+		    name="text"></textarea>
+	  <input type="submit" value="Get Tweets" id="twitter_submit" class="btn btn-success"/>
+	</div>
+      </div>
+      <div id="twitter_loading" style="display: none;" class="container">
+	<img src="images/loader.gif" alt="Please wait.." />
+      </div>
+      <div id="twitter_result" class="row"></div>
+    </div>
+
+    <!-- ------------ TEMPLATES ------------ -->
+
+    <script type="text/template" id="twitter_searchResult">
       <div class="col-md-6" id="{{search_term}}">
-	<h2>{{search_term}} <small>Sentiment Analysis</small></h2>
+	<h2>Sentiment Analysis <small>"{{search_term}}"</small></h2>
 	<ul class="unstyled">
 	  {{#tweets}}
 	  <div>
@@ -61,10 +89,10 @@
       var text = $("textarea#text").val();
       if (text) {
         var searchKeywords = text;
-        $.get('/twitter/search.json?search_term='+ searchKeywords,  function(result) {
+        $.get('/sentiment.json?search_term='+ searchKeywords,  function(result) {
           var data = {
-            search_term : result.search_term,
-            tweets : result.tweets
+            text : searchKeywords,
+            sentiment : result.sentiment
 	  };
           var template = $('#searchResult').html();
           var html = Mustache.to_html(template, data);
@@ -74,6 +102,28 @@
         alert("Please enter text in textarea")
       }
       $('#loading').hide();
+    });
+
+    $("#twitter_submit").on("click", function(event) {
+      $("#twitter_result").empty();
+      event.preventDefault();
+      $('#twitter_loading').show();
+      var text = $("textarea#twitter_text").val();
+      if (text) {
+        var searchKeywords = text;
+        $.get('/twitter/search.json?search_term='+ searchKeywords,  function(result) {
+          var data = {
+            search_term : result.search_term,
+            tweets : result.tweets
+	  };
+          var template = $('#twitter_searchResult').html();
+          var html = Mustache.to_html(template, data);
+          $('#twitter_result').append(html);
+	});
+      } else {
+        alert("Please enter text in textarea")
+      }
+      $('#twitter_loading').hide();
     });
     </script>
   </body>
