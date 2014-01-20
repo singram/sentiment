@@ -6,3 +6,4 @@ lib/stanford-corenlp-3.3.1-sources.jar
 lib/joda-time-2.1-sources.jar
 lib/jollyday-0.4.7-sources.jar
 lib/xom-1.2.10-src.jar
+lib/stanford-corenlp*.jar
