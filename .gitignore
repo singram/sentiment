@@ -1,2 +1,8 @@
-oauth_env.sh
+
+stanford-corenlp-full-2014-01-04.zip
+oauth_env
 tmp/restart.txt
+lib/stanford-corenlp-3.3.1-sources.jar
+lib/joda-time-2.1-sources.jar
+lib/jollyday-0.4.7-sources.jar
+lib/xom-1.2.10-src.jar

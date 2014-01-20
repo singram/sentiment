@@ -1,107 +1,55 @@
-# TorqueBox on OpenShift
-
-Here is a quick way to try out your Ruby application running in
-TorqueBox on OpenShift.
-
-By default, this quickstart will install TorqueBox 3.0.0.  You
-can specify a different version by tweaking
-`.openshift/torquebox.sh`, but any release older
-than 3.0.0.beta1 won't work. ;-)
+# Experiments with Twitter4J, Stanford NLP Sentiment analysis, Torquebox & Openshift
 
 
-## Running on OpenShift
+## Getting started locally.
 
-Create an account at http://openshift.redhat.com/
+### Pre-requistites
 
-Ensure you have the latest version of the
-[client tools](https://www.openshift.com/get-started#cli).
+1. RVM installed
 
-Create a jbossas-7 application from the code in this repository:
+### Installation
 
-    rhc app create -a yourapp -s -t jbossas-7 --from-code git://github.com/openshift-quickstart/torquebox-quickstart.git
+Due to file size limitations on Github (100Mb) is is necessary to download the NLP package from stanfords website.
+To do this, from the project root directory run
 
-That's it! The first build will take a minute or two, so be patient.
-You should ssh to your app and run `tail_all` so you'll have something
-to watch while your app deploys.
+    ./setup
 
-When you see `Deployed "your-knob.yml"` in the log,
-point a browser at the following link (adjusted for your namespace)
-and you should see a friendly welcome:
+Next you will need to download the gems required for the project.
 
-    http://yourapp-$namespace.rhcloud.com
+    bundle install
 
-Any changes you push from the `yourapp/` directory will trigger a
-redeploy of your app.
+Next you will need to set up your environment variables dictating your Twitter access credentials.
+A helper file has been created for you to edit and source into your environment. Make a copy of this file and edit the contents appropriately.
+Please note that 'oauth_env' is listed in the .gitignore file to protect your twitter credentials from accidentally being checked in.
 
-At this point, you can either write your app from scratch, or you can
-merge in changes from an existing project, i.e. your real app.
+    cp oauth_env.sample oauth_env
+    vi oauth_env
 
-    git remote add yourrealapp -m master git@github.com:yourorg/yourrealapp.git
-    git pull -s recursive -X theirs yourrealapp master
-    git push
+To load into your shell environment correctly execute the following
 
-Now whenever you're ready to deploy your real app to OpenShift, you
-pull in changes from your real repo and push to your OpenShift repo.
+    source ./oauth_env
 
-Drop in to the `#torquebox` IRC channel on freenode.net if you have any
-questions.
+Finally to run your server
 
+    torquebox run
 
-## Zero Downtime Deployments
+In a seperate shell window fire up a brower to access the server
 
-If you'd like to take advantage of zero downtime deployments provided
-by TorqueBox, you'll need to add an OpenShift-specific `hot_deploy`
-marker file to tell OpenShift not to restart TorqueBox and the
-TorqueBox-specific zero downtime deployment marker.
-
-    touch .openshift/markers/hot_deploy
-    git add .openshift/markers/hot_deploy
-    mkdir -p tmp
-    touch tmp/restart.txt
-    git add tmp/restart.txt
-    git commit -m "Use zero downtime deploys for the web runtime"
-    git push
-
-Now every time you push code the TorqueBox web runtime will be
-restarted without dropping any web requests. See
-http://torquebox.org/documentation/current/deployment.html#zero-downtime-redeployment
-for the different markers you can use to restart non-web runtimes.
-
-To switch back to regular deployments, remove
-`.openshift/markers/hot_deploy` and `tmp/restart.txt`, commit, and
-push the application.
+    firefox http://localhost:8080/
 
 
-## Database Migrations
+## Openshift
 
-If you have a Rails application and want to run database migrations on
-every new code push, uncomment the `db_migrate` line from
-`.openshift/action_hooks/pre_start_jbossas-7`. If you don't use Rails
-and still need to run migrations, edit the `db_migrate` function in
-`.openshift/torquebox.sh` to fit your needs.
+Work in progress.
 
+Due to github limitations and wanting to sync the repositories there are 2 options for working aorund the jar size issues.
 
-## Connecting VisualVM to TorqueBox on OpenShift
+1.  Download the jars, check them in, deploy to OpenShift as normal and not worry about further syncing with github
 
-You can use OpenShift's port forwarding feature to connect a local
-VisualVM to your TorqueBox instances running in OpenShift. In a local
-terminal window, initiate port forwarding:
+2.  Ssh into your OpenShift gear and download the jars from there.
 
-    rhc port-forward -a yourapp
+## Prior art
 
-Take note of which local port the remote port 9999 gets forwarded to -
-this should be 9999 unless you already have something listening
-locally on that same port.
+Wish I could say I thought of this myself but the excellent article written by Shekhar Gulati was inspirational for a Jruby port.
 
-Now we need to boot VisualVM with the `jboss-cli-client.jar` on the
-classpath. This JAR is found within the TorqueBox distribution.
-
-    jvisualvm --cp:a $TORQUEBOX_HOME/jboss/bin/client/jboss-cli-client.jar
-
-Now add a new JMX Connection in VisualVM (File -> Add JMX Connection)
-and enter `service:jmx:remoting-jmx://localhost:9999` as the
-connection string, substituting port 9999 if necessary. No security
-credentials are needed.
-
-After the connection is added, double-click on it in VisualVM's left
-pane to connect to the remote TorqueBox server.
+See https://www.openshift.com/blogs/day-20-stanford-corenlp-performing-sentiment-analysis-of-twitter-using-java

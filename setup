@@ -1,0 +1,6 @@
+#!/bin/bash
+
+#wget http://nlp.stanford.edu/software/stanford-corenlp-full-2014-01-04.zip
+unzip stanford-corenlp-full-2014-01-04.zip *.jar -d ./
+cp ./stanford-corenlp-full-2014-01-04/*.jar ./lib
+rm -rf ./stanford-corenlp-full-2014-01-04/

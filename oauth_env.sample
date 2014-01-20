@@ -1,0 +1,5 @@
+echo 'Setting Twitter variables (source ./oauth_env.sh)'
+export TWITTER_OAUTH_CONSUMER_KEY=my_key_here
+export TWITTER_OAUTH_CONSUMER_SECRET=my_key_here
+export TWITTER_OAUTH_ACCESS_TOKEN=my_key_here
+export TWITTER_OAUTH_ACCESS_TOKEN_SECRET=my_key_here
